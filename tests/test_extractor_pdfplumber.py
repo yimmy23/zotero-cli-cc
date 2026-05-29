@@ -7,10 +7,25 @@ from zotero_cli_cc.core.pdf_extractor import (
     PdfiumExtractor,
     PdfplumberExtractor,
     _select_pages,
+    _table_has_content,
     get_extractor,
 )
 
 FIXTURES = Path(__file__).parent / "fixtures"
+
+
+class TestTableHasContent:
+    def test_all_empty_is_false(self):
+        assert _table_has_content([["", ""], ["", ""]]) is False
+
+    def test_whitespace_only_is_false(self):
+        assert _table_has_content([[" ", "\n"], ["\t", ""]]) is False
+
+    def test_any_content_is_true(self):
+        assert _table_has_content([["", ""], ["", "x"]]) is True
+
+    def test_empty_table_is_false(self):
+        assert _table_has_content([]) is False
 
 
 class TestSelectPages:

@@ -343,11 +343,20 @@ class PdfplumberExtractor(BasePdfExtractor):
             for page in _select_pages(pdf.pages, pages):
                 for idx, table in enumerate(page.extract_tables() or []):
                     rows = [["" if cell is None else str(cell) for cell in row] for row in table]
+                    # pdfplumber detects spurious all-empty grids on figure-heavy
+                    # pages; drop tables with no actual cell content.
+                    if not _table_has_content(rows):
+                        continue
                     out.append({"page": page.page_number, "index": idx, "rows": rows})
         return out
 
     def name(self) -> str:
         return "pdfplumber"
+
+
+def _table_has_content(rows: list[list[str]]) -> bool:
+    """True if any cell in the table has non-whitespace text."""
+    return any(cell.strip() for row in rows for cell in row)
 
 
 def _select_pages(page_list: Any, pages: tuple[int, int] | None) -> Any:
