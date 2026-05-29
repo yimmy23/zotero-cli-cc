@@ -27,8 +27,10 @@ mcp = ["mcp>=1.0"]
 # PyMuPDF is AGPL/Artifex-licensed, so it is opt-in. Installing this extra
 # enables the 'pymupdf' extractor (PDF annotation/highlight extraction and
 # higher-quality markdown via pymupdf4llm, both fully local — no API/network).
-# The default 'pdfium' extractor needs none of this.
-pymupdf = ["pymupdf>=1.24", "pymupdf4llm>=0.0.17"]
+# The default 'pdfium' extractor needs none of this. pymupdf4llm is pinned to
+# the lightweight 0.0.x line on purpose: 1.27.x+ pulls pymupdf-layout ->
+# onnxruntime (an ML runtime), which we don't want in the lightweight tier.
+pymupdf = ["pymupdf>=1.24", "pymupdf4llm>=0.0.17,<0.1"]
 # pdfplumber (pure Python, no ML/GPU/network) powers the 'pdfplumber' extractor's
 # table extraction. Optional so the core install stays lean.
 pdfplumber = ["pdfplumber>=0.11"]
@@ -65,7 +67,7 @@ dev = [
     "ruff>=0.9",
     "mypy>=1.14",
     "pymupdf>=1.24",
-    "pymupdf4llm>=0.0.17",
+    "pymupdf4llm>=0.0.17,<0.1",
     "pdfplumber>=0.11",
 ]
 
