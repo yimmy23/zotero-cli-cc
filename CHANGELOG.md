@@ -23,6 +23,8 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **`pdfplumber` table extractor** (`zotero-cli-cc[pdfplumber]`): pure-Python
   table extraction (no ML / GPU / network). Adds `extract_tables()` to the
   extractor interface, a `zot pdf KEY --tables` flag, and a `tables` MCP tool.
+  All-empty tables (spurious grids pdfplumber detects on figure-heavy pages)
+  are filtered out so only tables with real cell content are returned.
 - **`pymupdf4llm` bundled into the `[pymupdf]` extra**: installing the extra now
   also enables higher-quality local Markdown output (no API / network — the
   `PyMuPdfExtractor` already uses it when present).
